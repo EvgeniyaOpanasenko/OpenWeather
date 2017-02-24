@@ -20,8 +20,6 @@ public class ClientServer {
 
     public static void main(String[] args) throws IOException {
 
-
-
         Socket socket = new Socket("192.168.0.18",8888);
         PrintWriter pw = new PrintWriter(socket.getOutputStream());
         log.info("Send message");

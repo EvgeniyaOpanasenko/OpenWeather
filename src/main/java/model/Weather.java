@@ -9,6 +9,9 @@ public class Weather {
 
     private String main;
 
+    public Weather() {
+    }
+
     public String getId ()
     {
         return id;

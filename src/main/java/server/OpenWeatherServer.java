@@ -1,19 +1,34 @@
 package server;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
+import com.google.gson.*;
 import model.Main;
 import model.Weather;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import sun.misc.IOUtils;
 
+import javax.print.DocFlavor;
+import javax.xml.ws.Response;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
 
 /**
  * Created by Lisa on 2/13/2017.
@@ -41,44 +56,24 @@ public class OpenWeatherServer {
         BufferedReader rd = new BufferedReader(
                 new InputStreamReader(response.getEntity().getContent()));
 
-        StringBuffer result = new StringBuffer();
-
+        //StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         String line = "";
         while ((line = rd.readLine()) != null) {
-            result.append(line);
-
-            System.out.println(result);
-
-
-            /*Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            String json = gson.toJson(result);
-
-            System.out.println(json);*/
-
-            // TODO just testing different possibilities
-           /* Object obj= JSONValue.parse(resAsAString);
-            JSONObject jsonObject = (JSONObject) obj;
-
-
-           *//* Main mainObj = (Main) jsonObject.get("main");
-            System.out.println(mainObj.toString());;*//*
-            //String country = (String) jsonObject.get("country");
-            Main temp_min = (Main) jsonObject.get("main");
-            //long temp_max = (Long) jsonObject.get("temp_max");
-            System.out.println(temp_min.getTemp());*/
+            result.append(line); // JsonSimple Object
         }
+        System.out.println(result);
 
-// to post methods
-    /*  String postUrl = "http://api.openweathermap.org/data/2.5/weather?q=Kyiv,ua&APPID=54bc4d8bf9a017e8233a54124a55fcce";
+        String json = result.toString();
+
         Gson gson = new Gson();
-        HttpClient httpClient = HttpClientBuilder.create().build();
-        HttpPost post = new HttpPost(postUrl);
-        StringEntity postingString =
-        new StringEntity(gson.toJson(Clouds.class));//gson.tojson() converts your pojo to json
-        post.setEntity(postingString);
-        post.setHeader("Content-type", "application/json");
-        HttpResponse  response = httpClient.execute(post)*/
-        ;
+        Weather page = gson.fromJson(json, Weather.class);
+
+        Main weather = new Main();
+
+        System.out.println(weather.getPressure());
+        //System.out.println(weather.getPressure());
 
     }
 }
+
